@@ -43,7 +43,6 @@ class FilmController extends Controller
         ]);
         Film::create($request->all());
         return redirect()->route('films.index')->with('info', 'Le film a bien été créé');
-
     }
 
     /**
@@ -64,9 +63,10 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(FIlm $film)
     {
-        //
+
+        return view('films.edit', compact('film'));
     }
 
     /**
@@ -76,9 +76,16 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, FIlm $film)
     {
-        //
+        //recuperer le film pui le update avec le nv request
+        $this->validate($request, [
+            'title' => ['required', 'string', 'max:100'],
+            'year' => ['required', 'numeric', 'min:1950', 'max:' . date('Y')],
+            'description' => ['required', 'string', 'max:500'],
+        ]);
+        $film->update($request->all());
+        return redirect()->route('films.index')->with('info', 'Le film a bien été modifié');
     }
 
     /**

@@ -29,7 +29,7 @@
                             <td>{{ $film->id }}</td>
                             <td><strong>{{ $film->title }}</strong></td>
                             <td><a class="btn btn-primary" href="{{ route('films.show', $film->id) }}">Voir</a></td>
-                            <td><a class="btn btn-warning" href="">Modifier</a></td>
+                            <td><a class="btn btn-warning" href="{{ route('films.edit', $film->id) }}">Modifier</a></td>
                             <td>
                                 <form action="{{ route('films.destroy', $film->id) }}" method="post">
                                     @csrf
