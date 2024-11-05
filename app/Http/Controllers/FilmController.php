@@ -47,8 +47,8 @@ class FilmController extends Controller
      */
     public function show(Film $film)
     {
-    
-        return view('films.show',compact('film'));
+
+        return view('films.show', compact('film'));
     }
 
     /**
@@ -82,6 +82,8 @@ class FilmController extends Controller
      */
     public function destroy(FIlm $film)
     {
-       $film->delete();
+        $film->delete();
+        return back()->with('info', 'Le film a bien été supprimé dans la
+base de données.');
     }
 }

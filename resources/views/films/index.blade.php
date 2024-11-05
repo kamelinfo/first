@@ -1,5 +1,11 @@
 @extends('template')
 @section('content')
+    @if (session()->has('info'))
+        <div class="alert alert-success">
+            {{ session('info') }}
+        </div>
+    @endif
+
     <div class="card">
         <header class="card-header">
             <h3>Films</h3>
