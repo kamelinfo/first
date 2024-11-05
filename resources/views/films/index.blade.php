@@ -5,6 +5,7 @@
             {{ session('info') }}
         </div>
     @endif
+    <a class="btn btn-info" href="{{ route('films.create') }}">Créer un film</a>
 
     <div class="card">
         <header class="card-header">
