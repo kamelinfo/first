@@ -21,12 +21,16 @@
                         <tr>
                             <td>{{ $film->id }}</td>
                             <td><strong>{{ $film->title }}</strong></td>
-                            <td><a class="btn btn-primary" href="">Voir</a></td>
+                            <td><a class="btn btn-primary" href="{{ route('films.show', $film->id) }}">Voir</a></td>
                             <td><a class="btn btn-warning" href="">Modifier</a></td>
                             <td>
-                               
-                                    <button class="btn btn-danger" >Supprimer</button>
-                             
+                                <form action="{{ route('films.destroy', $film->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger" type="submit">Supprimer</button>
+                                </form>
+
+
                             </td>
                         </tr>
                     @endforeach

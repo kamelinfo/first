@@ -45,9 +45,10 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Film $film)
     {
-        //
+    
+        return view('films.show',compact('film'));
     }
 
     /**
@@ -79,8 +80,8 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(FIlm $film)
     {
-        //
+       $film->delete();
     }
 }
