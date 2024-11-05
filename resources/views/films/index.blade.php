@@ -17,7 +17,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                  
+                    @foreach ($films as $film)
+                        <tr>
+                            <td>{{ $film->id }}</td>
+                            <td><strong>{{ $film->title }}</strong></td>
+                            <td><a class="btn btn-primary" href="">Voir</a></td>
+                            <td><a class="btn btn-warning" href="">Modifier</a></td>
+                            <td>
+                               
+                                    <button class="btn btn-danger" >Supprimer</button>
+                             
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
