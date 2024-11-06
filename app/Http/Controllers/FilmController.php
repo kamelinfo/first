@@ -13,26 +13,10 @@ class FilmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  let produit= null; {}
-  if (produit) {
-    if(produit.prix>5){
 
-    }
-  }
 
     public function index($slug = null)
     {
-        if (!$wifi) {
-            return 'pas de connxion';
-        }
-        if (!$connexion) {
-            return '^pas de connexion';
-        }
-        if (!$admin) {
-            return 'vous nete pas admin';
-        }
-        echo 'vous etes admin';
-
 
 
         $films = $slug ? Category::where('slug', $slug)->first()->films()->get() : Film::all();
