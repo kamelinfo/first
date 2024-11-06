@@ -28,4 +28,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/users',[UserController::class,'create'] );
 Route::post('/users',[UserController::class,'store'] );
 Route::resource('films', FilmController::class);
+Route::get('category/{slug}/films', [FilmController::class,'index'])->name('films.category');
 

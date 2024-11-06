@@ -12,6 +12,11 @@ redirection vers la page index avec le message sucess
 
             <form action="{{ route('films.store') }}" method="POST">
                 @csrf
+                <select name="category_id" id="">
+                    @foreach ($categories as $c)
+                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                    @endforeach
+                </select>
                 <div class="field">
                     <label class="label">Titre</label>
                     <div class="control">
@@ -36,11 +41,11 @@ redirection vers la page index avec le message sucess
                 <div class="field">
                     <label class="label">Description</label>
                     <div class="control">
-                        <textarea class="form-control" name="description" placeholder="Description du film"> {{old('description')}} </textarea>
+                        <textarea class="form-control" name="description" placeholder="Description du film"> {{ old('description') }} </textarea>
                     </div>
                     @error('description')
-                    <p class="text-danger">{{ $message }}</p>
-                @enderror
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="field">
                     <div class="control">

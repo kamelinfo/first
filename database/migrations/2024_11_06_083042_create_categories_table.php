@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::create('films', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->year('year');
-            $table->text('description');
-            $table->foreignId('category_id')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
 
             $table->timestamps();
         });
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('films');
+        Schema::dropIfExists('categories');
     }
 };
