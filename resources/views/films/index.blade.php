@@ -7,10 +7,16 @@
     @endif
     <a class="btn btn-info" href="{{ route('films.create') }}">Créer un film</a>
     <div class="select">
-        <select>
-            <option value="">Toutes catégories</option>
+        <select onchange="window.location.href = this.value">
+            <option value="{{ route('films.index') }}"
+                @unless ($slug)
+                selected
+            @endunless>Toutes catégories
+            </option>
             @foreach ($categories as $category)
-                <option value="">{{ $category->name }}</option>
+                <option value="{{ route('films.category', $category->slug) }}"
+                    {{ $slug == $category->slug ? 'selected' : '' }}>
+                    {{ $category->name }}</option>
             @endforeach
         </select>
 

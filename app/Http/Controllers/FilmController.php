@@ -13,11 +13,32 @@ class FilmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+  let produit= null; {}
+  if (produit) {
+    if(produit.prix>5){
+
+    }
+  }
+
+    public function index($slug = null)
     {
-        $films = Film::all();
-        $categories=Category::all();
-        return view('films.index', compact('films','categories'));
+        if (!$wifi) {
+            return 'pas de connxion';
+        }
+        if (!$connexion) {
+            return '^pas de connexion';
+        }
+        if (!$admin) {
+            return 'vous nete pas admin';
+        }
+        echo 'vous etes admin';
+
+
+
+        $films = $slug ? Category::where('slug', $slug)->first()->films()->get() : Film::all();
+
+        $categories = Category::all();
+        return view('films.index', compact('films', 'categories', 'slug'));
     }
 
     /**
@@ -27,8 +48,8 @@ class FilmController extends Controller
      */
     public function create()
     {
-        $categories=Category::all();
-        return view('films.create',compact('categories'));
+        $categories = Category::all();
+        return view('films.create', compact('categories'));
     }
 
     /**
