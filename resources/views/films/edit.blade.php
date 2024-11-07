@@ -3,7 +3,7 @@ année >1950  <année en cour
 validation
 redirection vers la page index avec le message sucess 
 --}}
-@extends('template') @section('content')
+@extends('layouts.app') @section('content')
     <div class="card">
         <header class="card-header">
             <h4>Modification d'un film</h4>
