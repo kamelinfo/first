@@ -17,6 +17,11 @@ redirection vers la page index avec le message sucess
                         <option value="{{ $c->id }}">{{ $c->name }}</option>
                     @endforeach
                 </select>
+                <select name="actors[]" id="" multiple>
+                    @foreach ($actors as $c)
+                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                    @endforeach
+                </select>
                 <div class="field">
                     <label class="label">Titre</label>
                     <div class="control">

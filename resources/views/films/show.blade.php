@@ -9,7 +9,13 @@
             <p>Année de sortie : {{ $film->year }}</p>
             <hr>
             <p>{{ $film->description }}</p>
-
+         <div class="actors">
+            <ul>
+                @foreach ($film->actors as $f)
+                    <li>{{$f->name}}</li>
+                @endforeach
+            </ul>
+         </div>
         </div>
     </div>
 @endsection

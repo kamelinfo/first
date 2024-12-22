@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Actor;
 use App\Models\Category;
 use App\Models\Film;
 use Illuminate\Http\Request;
@@ -33,7 +34,8 @@ class FilmController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('films.create', compact('categories'));
+        $actors = Actor::all();
+        return view('films.create', compact('categories', 'actors'));
     }
 
     /**
@@ -49,7 +51,8 @@ class FilmController extends Controller
             'year' => ['required', 'numeric', 'min:1950', 'max:' . date('Y')],
             'description' => ['required', 'string', 'max:500'],
         ]);
-        Film::create($request->all());
+        $film = Film::create($request->all());
+        $film->actors()->attach($request->actors);
         return redirect()->route('films.index')->with('info', 'Le film a bien été créé');
     }
 
@@ -73,7 +76,7 @@ class FilmController extends Controller
      */
     public function edit(FIlm $film)
     {
-
+          
         return view('films.edit', compact('film'));
     }
 
@@ -93,6 +96,8 @@ class FilmController extends Controller
             'description' => ['required', 'string', 'max:500'],
         ]);
         $film->update($request->all());
+
+$film->actors()->sync($request->actors);
         return redirect()->route('films.index')->with('info', 'Le film a bien été modifié');
     }
 
@@ -102,9 +107,12 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FIlm $film)
+    public function destroy(Film $film)
     {
+
+        $film->actors()->detach();
         $film->delete();
+
         return back()->with('info', 'Le film a bien été supprimé dans la
 base de données.');
     }
