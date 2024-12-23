@@ -1,4 +1,10 @@
 <?php
+/*
+    Ce fichier définit le modèle `User` qui représente les utilisateurs dans l'application.
+    Le modèle `User` est lié à plusieurs rôles via une relation `belongsToMany`.
+    Il utilise les traits `HasApiTokens`, `HasFactory` et `Notifiable` pour la gestion des tokens API, la génération d'usines Eloquent et les notifications.
+    Il inclut également une méthode `hasRole` pour vérifier si un utilisateur possède un rôle spécifique.
+*/
 
 namespace App\Models;
 
@@ -13,7 +19,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Les attributs qui peuvent être assignés en masse.
      *
      * @var array<int, string>
      */
@@ -24,7 +30,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Les attributs qui doivent être masqués lors de la sérialisation.
      *
      * @var array<int, string>
      */
@@ -34,16 +40,32 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * Les attributs qui doivent être convertis en types natifs.
      *
      * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    function roles()  {
-        return  $this->belongsToMany(Role::class);
+
+    /**
+     * Définir la relation `belongsToMany` avec le modèle `Role`.
+     *
+     * Un utilisateur peut avoir plusieurs rôles et un rôle peut être attribué à plusieurs utilisateurs.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
+
+    /**
+     * Vérifie si l'utilisateur possède un rôle spécifique.
+     *
+     * @param string $role  Le nom du rôle à vérifier.
+     * @return bool  Retourne true si l'utilisateur possède le rôle, sinon false.
+     */
     public function hasRole($role)
     {
         return $this->roles()->where('name', $role)->exists();

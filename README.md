@@ -1,64 +1,104 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Gestion des Rôles dans une Application Laravel
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Cette section vous guide étape par étape pour implémenter la gestion des rôles dans votre application Laravel. Suivez les instructions ci-dessous pour ajouter la gestion des rôles, créer les middleware nécessaires, et configurer les routes afin de restreindre l'accès en fonction des rôles des utilisateurs.
 
-## About Laravel
+## Table des Matières
+1. [Prérequis](#prérequis)
+2. [Étape 1 : Créer les Modèles et Migrations](#étape-1-créer-les-modèles-et-migrations)
+3. [Étape 2 : Exécuter les Migrations et Seeders](#étape-2-exécuter-les-migrations-et-seeders)
+4. [Étape 3 : Mettre à Jour les Modèles](#étape-3-mettre-à-jour-les-modèles)
+5. [Étape 4 : Créer le Middleware `RoleMiddleware`](#étape-4-créer-le-middleware-rolemiddleware)
+6. [Étape 5 : Enregistrer le Middleware dans le Kernel](#étape-5-enregistrer-le-middleware-dans-le-kernel)
+7. [Étape 6 : Mettre à Jour le Contrôleur d'Inscription](#étape-6-mettre-à-jour-le-contrôleur-dinscription)
+8. [Étape 7 : Modifier la Vue d'Inscription](#étape-7-modifier-la-vue-dinscription)
+9. [Étape 8 : Configurer les Routes avec le Middleware de Rôle](#étape-8-configurer-les-routes-avec-le-middleware-de-rôle)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Prérequis
 
-## Learning Laravel
+- **Application Laravel Installée** : Assurez-vous d'avoir une application Laravel fonctionnelle.
+- **Laravel UI avec Bootstrap** : Laravel UI doit être installé et configuré avec Bootstrap pour gérer l'authentification.
+- **Connaissances de Base** : Familiarité avec les concepts de Laravel tels que les routes, middleware, modèles et migrations.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Étape 1 : Créer les Modèles et Migrations
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **Créer le Modèle `Role` avec Migration**  
+   Générez le modèle `Role` ainsi que sa migration associée pour stocker les rôles des utilisateurs.
+   
+2. **Créer le Modèle `Actor` avec Migration**  
+   Générez le modèle `Actor` et sa migration pour gérer les acteurs liés aux films.
+   
+3. **Créer la Table Pivot `role_user`**  
+   Générez la migration pour la table pivot `role_user` qui établit une relation many-to-many entre les utilisateurs et les rôles.
 
-## Laravel Sponsors
+## Étape 2 : Exécuter les Migrations et Seeders
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. **Configurer les Migrations**  
+   Ouvrez les fichiers de migration générés dans le dossier `database/migrations/` et ajoutez les champs nécessaires pour chaque table (`roles`, `actors`, `role_user`).
+   
+2. **Créer le Seeder pour les Rôles**  
+   Générez un seeder `RoleSeeder` pour initialiser les rôles dans la base de données.
+   
+3. **Ajouter le Seeder dans `DatabaseSeeder`**  
+   Modifiez le fichier `database/seeders/DatabaseSeeder.php` pour appeler le seeder `RoleSeeder`.
+   
+4. **Exécuter les Migrations et Seeders**  
+   Utilisez la commande Artisan pour exécuter les migrations et seeders, créant ainsi les tables et insérant les rôles.
 
-### Premium Partners
+## Étape 3 : Mettre à Jour les Modèles
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+1. **Mettre à Jour le Modèle `User`**  
+   Ajoutez la relation many-to-many avec le modèle `Role` et implémentez la méthode `hasRole` pour vérifier les rôles de l'utilisateur.
+   
+2. **Mettre à Jour le Modèle `Role`**  
+   Ajoutez la relation many-to-many avec le modèle `User` pour permettre l'association des rôles aux utilisateurs.
+   
+3. **Vérifier les Relations dans les Modèles `Film`, `Category`, et `Actor`**  
+   Assurez-vous que les relations entre les modèles sont correctement définies pour une gestion efficace des données.
 
-## Contributing
+## Étape 4 : Créer le Middleware `RoleMiddleware`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. **Générer le Middleware**  
+   Utilisez la commande Artisan pour créer le middleware `RoleMiddleware`.
+   
+2. **Implémenter la Logique du Middleware**  
+   Modifiez le fichier `app/Http/Middleware/RoleMiddleware.php` pour vérifier les rôles des utilisateurs avant de permettre l'accès aux routes protégées.
 
-## Code of Conduct
+## Étape 5 : Enregistrer le Middleware dans le Kernel
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. **Ouvrir le Fichier Kernel**  
+   Naviguez vers `app/Http/Kernel.php`.
+   
+2. **Ajouter le Middleware au Tableau `$routeMiddleware`**  
+   Insérez `'role' => \App\Http\Middleware\RoleMiddleware::class,` dans le tableau `$routeMiddleware` pour enregistrer le middleware avec l'alias `role`.
 
-## Security Vulnerabilities
+## Étape 6 : Mettre à Jour le Contrôleur d'Inscription
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. **Ouvrir le Contrôleur `RegisterController`**  
+   Modifiez le fichier `app/Http/Controllers/Auth/RegisterController.php`.
+   
+2. **Ajouter la Gestion des Rôles**  
+   Mettez à jour les méthodes `validator` et `create` pour inclure la sélection et l'attribution des rôles lors de l'inscription des utilisateurs.
 
-## License
+## Étape 7 : Modifier la Vue d'Inscription
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. **Ouvrir la Vue d'Inscription**  
+   Modifiez le fichier `resources/views/auth/register.blade.php`.
+   
+2. **Ajouter un Champ Sélecteur de Rôle**  
+   Insérez un élément `<select>` permettant aux utilisateurs de choisir leur rôle lors de l'inscription.
+
+## Étape 8 : Configurer les Routes avec le Middleware de Rôle
+
+1. **Ouvrir le Fichier des Routes Web**  
+   Modifiez le fichier `routes/web.php`.
+   
+2. **Appliquer le Middleware `role` aux Routes**  
+   Définissez des groupes de routes protégées par les middleware `auth` et `role` pour restreindre l'accès en fonction des rôles.
+   
+   - **Routes réservées aux administrateurs** : Accès complet, y compris la création, la mise à jour et la suppression de films.
+   - **Routes réservées aux gestionnaires** : Accès limité, par exemple, création et lecture de films sans modification ou suppression.
+   - **Routes réservées aux spectateurs** : Accès uniquement en lecture, sans possibilité de créer, modifier ou supprimer des films.
+
